@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台登录-X-admin1.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+    <!-- 顶部开始 -->
+    <div class="container1">
+        <div class="logo"><a href="./index.html">X-ADMIN V1.1</a></div>
+        <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
+        <ul class="layui-nav right" lay-filter="">
+          <li class="layui-nav-item">
+            <a href="javascript:;">admin</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+              <dd><a href="">个人信息</a></dd>
+              <dd><a href="">切换帐号</a></dd>
+              <dd><a href="./login.html">退出</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="/">前台首页</a></li>
+        </ul>
+    </div>
+    <!-- 顶部结束 -->
+    <!-- 中部开始 -->
+    <div id="wrapper" class="wrapper">
+     <!-- 左侧菜单开始 -->
+        <div class="left-nav">
+          <div id="side-nav">
+            <ul id="nav">
+                <li class="list" current>
+                    <a href="./index.html">
+                        <i class="iconfont">&#xe761;</i>
+                        欢迎页面
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        用户管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="member-list.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                用户列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="xuebaconfirme.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                学霸认证
+                            </a>
+                        </li>
+                        <li>
+                            <a href="member-kiss.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                积分管理
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                                分类管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="category.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                分类列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        文章管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="ArticleList.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                                                 文章列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        文件管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="FileList.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                文件列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        反馈管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="feedback.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                反馈列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+          </div>
+        </div>
+        <!-- 左侧菜单结束 -->
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+
+                <div class="layui-form-pane" style="text-align: center;">
+                  <div class="layui-form-item" style="display: inline-block;">
+
+                      <div class="layui-input-inline">
+                          <input v-model="string" type="text" name="username"  placeholder="" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-input-inline" style="width:80px">
+                          <button @click="find" class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                      </div>
+                  </div>
+                </div> 
+
+            <table class="layui-table">
+                <thead>
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            用户名
+                        </th>
+                        <th>
+                            姓名
+                        </th>
+                        <th>
+                            学号
+                        </th>
+                        <th>
+                            积分
+                        </th>
+                        <th style="width: 80px">
+                            分
+                        </th>
+                        <th style="width: 120px">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in list">
+
+                        <td>{{user.userId}}</td>
+                        <td>{{user.userUname}}</td>
+                        <td>{{user.userName}}</td>
+                        <td>{{user.userStuId}}</td>
+                        <td>{{user.userIntegral}}</td>
+                        <td><input style="width: 60px" class="layui-input" :name="user.userId"></td>
+                        <td ><i @click="add" :id="user.userId" class="layui-icon">&#xe62f;</i>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <i @click="minus" :id="user.userId" class="layui-icon">&#xe601;</i>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+
+    <!-- 背景切换开始 -->
+    <div class="bg-changer">
+        <div class="swiper-container changer-list">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img class="item" src="./images/a.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/b.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/c.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/d.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/e.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/f.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/g.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/h.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/i.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/j.jpg" alt=""></div>
+                <div class="swiper-slide"><span class="reset">初始化</span></div>
+            </div>
+        </div>
+        <div class="bg-out"></div>
+        <div id="changer-set"><i class="iconfont">&#xe696;</i></div>   
+    </div>
+    <!-- 背景切换结束 -->
+    <!-- 页面动态效果 -->
+    <script>
+
+        var vm=new Vue({
+            el:"#wrapper",
+            data:{
+                list:[],
+                flag:false,
+                string:''
+            },
+            created:function(){
+                this.init();
+            },
+            methods:{
+                init:function () {
+                    var self=this;
+                    axios.get("https://www.a1c1.com/user/all")
+                        .then(function(response){
+                            if(response.data.status==200){
+
+                                self.list=response.data.data;
+                                console.log(self.list)
+                            }else{
+                                alert(response.data.message);
+                            }
+                        }).catch(function(e){
+                        console.log(e)
+                    })
+                },
+                find:function () {
+                    var self=this;
+                    axios.get("https://www.a1c1.com/user/id?string="+self.string)
+                        .then(function(response){
+                            if(response.data.status==200){
+
+                                self.list=response.data.data;
+                                console.log(self.list)
+                            }else{
+                                alert(response.data.message);
+                            }
+                        }).catch(function(e){
+                        console.log(e)
+                    })
+                    $(":input").val("")
+                },
+                add:function (e) {
+                    var self=this;
+                    if(/(^[0-9]*[1-9][0-9]*$)/.test($("input[name="+e.target.id+"]").val())){
+                        axios.get("https://www.a1c1.com/user/add",{params:{
+                                userIntegral:$("input[name="+e.target.id+"]").val(),
+                                userId:e.target.id,
+                            }})
+                            .then(function(response){
+                                var object=response.data;
+                                if(object.status==200){
+                                    alert(object.message);
+
+                                    self.init();
+                                }else{
+                                    alert(object.message);
+                                }
+                            }).catch(function(error){
+                            console.log(error)
+                        })
+                    }else{
+                        alert("请输入正确的数值!")
+                    }
+                    $(":input").val("")
+                },
+                minus:function (e) {
+                    var self=this;
+                    if(/(^[0-9]*[1-9][0-9]*$)/.test($("input[name="+e.target.id+"]").val())){
+
+                            axios.get("https://www.a1c1.com/user/minus",{params:{
+                                    userIntegral:$("input[name="+e.target.id+"]").val(),
+                                    userId:e.target.id,
+                                }})
+                                .then(function(response){
+                                    console.log(response)
+                                    var object=response.data;
+                                    if(object.status==200){
+                                        alert(object.message);
+                                        self.init();
+                                    }else{
+                                        alert(object.message);
+                                    }
+                                }).catch(function(error){
+                                console.log(error)
+                            })
+
+                    }else{
+                        alert("请输入正确的数值!")
+                    }
+                    $(":input").val("")
+                }
+            }
+        })
+
+
+        </script>
+        
+</body>
+</html>

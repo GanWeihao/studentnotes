@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.studentnotes.mapper.UfileMapper" >
+  <resultMap id="BaseResultMap" type="com.example.studentnotes.model.Ufile" >
+    <constructor >
+      <idArg column="UFILE_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="UFILE_TITLE" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="UFILE_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="UFILE_DOWNLOAD" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="UFILE_INTRODUCE" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="UFILE_URL" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="UFILE_NAME" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="UFILE_STATUS" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="UFILE_CATEGORY_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="UFILE_USER_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    UFILE_ID, UFILE_TITLE, UFILE_TIME, UFILE_DOWNLOAD, UFILE_INTRODUCE, UFILE_URL, UFILE_NAME,
+    UFILE_STATUS, UFILE_CATEGORY_ID, UFILE_USER_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.Ufile"  >
+    select 
+    <include refid="Base_Column_List" />
+    from ufile
+    where UFILE_ID = #{ufileId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.Ufile"  >
+    select
+    <include refid="Base_Column_List" />
+    from ufile
+    where UFILE_USER_ID = #{ufileUserId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByTitle" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.Ufile"  >
+    select
+    <include refid="Base_Column_List" />
+    from ufile
+    where UFILE_TITLE LIKE #{ufileTitle,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ufile
+    where UFILE_ID = #{ufileId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.studentnotes.model.Ufile" >
+    insert into ufile (UFILE_TITLE, UFILE_TIME,
+      UFILE_DOWNLOAD, UFILE_INTRODUCE, UFILE_URL, 
+      UFILE_NAME, UFILE_STATUS, UFILE_CATEGORY_ID,
+      UFILE_USER_ID)
+    values (#{ufileTitle,jdbcType=VARCHAR}, now(),
+      0, #{ufileIntroduce,jdbcType=VARCHAR}, #{ufileUrl,jdbcType=VARCHAR},
+      #{ufileName,jdbcType=VARCHAR}, 0, #{ufileCategoryId,jdbcType=INTEGER},
+      #{ufileUserId,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.studentnotes.model.Ufile" >
+    update ufile
+    <set >
+      <if test="ufileTitle != null" >
+        UFILE_TITLE = #{ufileTitle,jdbcType=VARCHAR},
+      </if>
+        UFILE_TIME = now(),
+      <if test="ufileDownload != null" >
+        UFILE_DOWNLOAD = #{ufileDownload,jdbcType=INTEGER},
+      </if>
+      <if test="ufileIntroduce != null" >
+        UFILE_INTRODUCE = #{ufileIntroduce,jdbcType=VARCHAR},
+      </if>
+      <if test="ufileUrl != null" >
+        UFILE_URL = #{ufileUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ufileName != null" >
+        UFILE_NAME = #{ufileName,jdbcType=VARCHAR},
+      </if>
+      <if test="ufileDlid != null" >
+        UFILE_STATUS = #{ufileStatus,jdbcType=INTEGER},
+      </if>
+      <if test="ufileCategoryId != null" >
+        UFILE_CATEGORY_ID = #{ufileCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="ufileUserId != null" >
+        UFILE_USER_ID = #{ufileUserId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UFILE_ID = #{ufileId,jdbcType=INTEGER}
+  </update>
+  <update id="download" parameterType="com.example.studentnotes.model.Ufile">
+    update ufile
+    set
+    UFILE_DOWNLOAD = UFILE_DOWNLOAD+1
+    where
+    UFILE_ID = #{ufileId,jdbcType=INTEGER}
+  </update>
+  <!--文件总量-->
+  <select id="selectFileNum" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ufile
+  </select>
+  <!--类别查文件-->
+  <select id="selectByCategory" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.Ufile">
+    select
+    <include refid="Base_Column_List" />
+    from ufile
+    where UFILE_CATEGORY_ID = #{ufileCategoryId,jdbcType=INTEGER}
+    and UFILE_STATUS = 0
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ufile
+    where UFILE_STATUS = 0
+  </select>
+  <update id="updateUfile" parameterType="com.example.studentnotes.model.Ufile">
+    update ufile
+    set
+    UFILE_STATUS = 1
+    where
+    UFILE_ID = #{ufileId,jdbcType=INTEGER}
+  </update>
+</mapper>

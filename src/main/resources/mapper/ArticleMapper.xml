@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.studentnotes.mapper.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.example.studentnotes.model.Article" >
+    <constructor >
+      <idArg column="ARTICLE_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ARTICLE_TITLE" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ARTICLE_CONTENT" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ARTICLE_PRAISE" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ARTICLE_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="ARTICLE_STATUS" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ARTICLE_USER_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="ARTICLE_CATEGORY_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ARTICLE_URL" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ARTICLE_ID, ARTICLE_TITLE, ARTICLE_CONTENT, ARTICLE_PRAISE, ARTICLE_TIME, ARTICLE_STATUS, ARTICLE_USER_ID,
+    ARTICLE_CATEGORY_ID, ARTICLE_URL
+  </sql>
+
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from article
+    where ARTICLE_ID = #{articleId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByTitle" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from article
+    where ARTICLE_TITLE = #{articleTitle,jdbcType=INTEGER}
+  </select>
+
+  <!--发布文章-->
+  <insert id="insertSelective" parameterType="com.example.studentnotes.model.Article" >
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="articleId != null" >
+        ARTICLE_ID,
+      </if>
+      <if test="articleTitle != null" >
+        ARTICLE_TITLE,
+      </if>
+      <if test="articleContent != null" >
+        ARTICLE_CONTENT,
+      </if>
+      <if test="articlePraise != null" >
+        ARTICLE_PRAISE,
+      </if>
+      <if test="articleTime != null" >
+        ARTICLE_TIME,
+      </if>
+      <if test="articleStatus != null" >
+        ARTICLE_STATUS,
+      </if>
+      <if test="articleUserId != null" >
+        ARTICLE_USER_ID,
+      </if>
+      <if test="articleCategoryId != null" >
+        ARTICLE_CATEGORY_ID,
+      </if>
+      <if test="articleUrl != null" >
+        ARTICLE_URL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="articleId != null" >
+        #{articleId,jdbcType=INTEGER},
+      </if>
+      <if test="articleTitle != null" >
+        #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleContent != null" >
+        #{articleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="articlePraise != null" >
+        0,
+      </if>
+      <if test="articleTime != null" >
+        now(),
+      </if>
+      <if test="articleStatus != null" >
+        0,
+      </if>
+      <if test="articleUserId != null" >
+        #{articleUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleCategoryId != null" >
+        #{articleCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="articleUrl != null" >
+        #{articleUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--修改文章-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.studentnotes.model.Article" >
+    update article
+    <set >
+      <if test="articleTitle != null" >
+        ARTICLE_TITLE = #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleContent != null" >
+        ARTICLE_CONTENT = #{articleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="articleCategoryId != null" >
+        ARTICLE_CATEGORY_ID = #{articleCategoryId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ARTICLE_ID = #{articleId,jdbcType=INTEGER}
+  </update>
+
+  <!--删除文章-->
+  <update id="deleteByPrimaryKey" parameterType="com.example.studentnotes.model.Article" >
+    update article
+    set
+      ARTICLE_STATUS = 1
+    where ARTICLE_ID = #{articleId,jdbcType=INTEGER}
+  </update>
+
+  <!--文章审核通过-->
+  <update id="auditByPrimaryKey" parameterType="com.example.studentnotes.model.Article" >
+    update article
+    set
+      ARTICLE_STATUS = 2
+    where ARTICLE_ID = #{articleId,jdbcType=INTEGER}
+  </update>
+
+  <!--点赞文章-->
+  <update id="addPraise" parameterType="com.example.studentnotes.model.Article" >
+    update article
+    set
+      ARTICLE_PRAISE = ARTICLE_PRAISE+1
+      where ARTICLE_ID = #{articleId,jdbcType=INTEGER}
+  </update>
+
+  <!--文章数量-->
+  <select id="selectArticleNum" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from article
+  </select>
+
+  <!--文章数量-->
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from article
+    where ARTICLE_STATUS = 0 order by ARTICLE_TIME desc
+  </select>
+</mapper>

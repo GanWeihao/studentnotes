@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.studentnotes.mapper.CommentsMapper" >
+  <resultMap id="BaseResultMap" type="com.example.studentnotes.model.Comments" >
+    <constructor >
+      <idArg column="COMMENTS_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="COMMENTS_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="COMMENTS_STATUS" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="COMMENTS_CONTENT" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="COMMENTS_ARTICLE_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="COMMENTS_USER_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COMMENTS_ID, COMMENTS_TIME,COMMENTS_STATUS, COMMENTS_CONTENT,
+    COMMENTS_ARTICLE_ID, COMMENTS_USER_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from comments
+    where COMMENTS_ID = #{acommentsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from comments
+    where ACOMMENTS_ID = #{acommentsId,jdbcType=INTEGER}
+  </delete>
+  <!--添加评论-->
+  <insert id="insertSelective" parameterType="com.example.studentnotes.model.Comments" >
+    insert into comments
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commentsId != null" >
+        COMMENTS_ID,
+      </if>
+      <if test="commentsTime != null" >
+        COMMENTS_TIME,
+      </if>
+      <if test="commentsStatus != null" >
+        COMMENTS_STATUS,
+      </if>
+      <if test="commentsContent != null" >
+        COMMENTS_CONTENT,
+      </if>
+      <if test="commentsFlieId != null" >
+        COMMENTS_ARTICLE_ID,
+      </if>
+      <if test="commentsUserId != null" >
+        COMMENTS_USER_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commentsId != null" >
+      #{commentsId,jdbcType=INTEGER},
+    </if>
+      <if test="commentsTime != null" >
+        now(),
+      </if>
+      <if test="commentsStatus != null" >
+        0,
+      </if>
+      <if test="commentsContent != null" >
+        #{commentsContent,jdbcType=VARCHAR},
+      </if>
+      <if test="commentsArticleId != null" >
+        #{commentsArticleId,jdbcType=INTEGER},
+      </if>
+      <if test="commentsUserId != null" >
+        #{commentsUserId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectByAid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from comments
+    where COMMENTS_ARTICLE_ID = #{commentsArticleId,jdbcType=INTEGER}
+  </select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.studentnotes.mapper.AdminMapper" >
+    <resultMap id="BaseResultMap" type="com.example.studentnotes.model.Admin" >
+        <constructor >
+            <idArg column="ADMIN_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="ADMIN_NAME" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="ADMIN_PASSWORD" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="ADMIN_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List" >
+    ADMIN_ID, ADMIN_NAME, ADMIN_PASSWORD, ADMIN_TIME
+  </sql>
+    <select id="adminSelect" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.Admin" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where
+        and ADMIN_NAME = #{adminName,jdbcType=VARCHAR}
+        and ADMIN_PASSWORD = #{adminPassword,jdbcType=VARCHAR}
+    </select>
+</mapper>

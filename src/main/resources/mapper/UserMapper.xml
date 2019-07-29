@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.studentnotes.mapper.UserMapper" >
+    <resultMap id="BaseResultMap" type="com.example.studentnotes.model.User" >
+        <constructor >
+            <idArg column="USER_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="USER_UNAME" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="USER_NAME" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="USER_PASSWORD" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="USER_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="USER_STUID" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="USER_PHONE" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="USER_RANK" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="USER_STATUS" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="USER_STUSTATUS" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="USER_INTEGRAL" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="USER_HEADIMG" jdbcType="VARCHAR" javaType="java.lang.String" />
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List" >
+    USER_ID,USER_UNAME,USER_NAME, USER_PASSWORD, USER_TIME,USER_STUID,USER_PHONE,USER_RANK,USER_STATUS,USER_STUSTATUS,USER_INTEGRAL,USER_HEADIMG
+  </sql>
+
+    <!--登录-->
+    <select id="userLogin" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.User" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where
+        (USER_STUID = #{userStuId,jdbcType=VARCHAR}
+        and USER_PASSWORD = #{userPassword,jdbcType=VARCHAR}
+        and USER_STATUS = 0)
+        or
+        (USER_UNAME = #{userUname,jdbcType=VARCHAR}
+        and USER_PASSWORD = #{userPassword,jdbcType=VARCHAR}
+        and USER_STATUS = 0)
+    </select>
+
+    <!--根据ID查找用户-->
+    <select id="findById" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.User">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+        and USER_STATUS = 0
+    </select>
+
+    <!--根据学号查询用户-->
+    <select id="findByStuId" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.User" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where USER_STUID = #{userStuId,jdbcType=VARCHAR}
+        AND USER_STUSTATUS = 0
+    </select>
+
+    <!--根据学号或手机号查询用户-->
+    <select id="findUser" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.User">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where
+        USER_UNAME = #{userUname,jdbcType=VARCHAR}
+        AND USER_STUSTATUS = 0
+        or
+        USER_STUID = #{userStuId,jdbcType=VARCHAR}
+        AND USER_STUSTATUS = 0
+        or
+        USER_PHONE = #{userPhone,jdbcType=VARCHAR}
+        AND USER_STUSTATUS = 0
+    </select>
+
+    <!--根据用户名查找用户-->
+    <select id="findByUname" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.User">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where
+        USER_UNAME = #{userUname,jdbcType=VARCHAR}
+        AND USER_STUSTATUS = 0
+    </select>
+
+    <!--注册-->
+    <insert id="userRegister" parameterType="com.example.studentnotes.model.User">
+        insert
+        into user
+        (USER_ID,USER_UNAME, USER_TIME,USER_RANK,USER_STATUS,USER_STUSTATUS,USER_INTEGRAL,USER_HEADIMG)
+        VALUES
+        (#{userId,jdbcType=VARCHAR},#{userUname,jdbcType=VARCHAR},now(),1,0,0,10,#{userHeadimg,jdbcType=VARCHAR})
+    </insert>
+
+    <!--修改昵称 密码 手机号-->
+    <update id="updateData" parameterType="com.example.studentnotes.model.User">
+        update
+        user
+        <set>
+            <if test="userName != null">
+                USER_NAME = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userStuId != null">
+                USER_STUID = #{userStuId,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                USER_PHONE = #{userPhone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+        AND USER_STATUS = 0
+    </update>
+
+    <update id="setSmartStu" parameterType="com.example.studentnotes.model.User">
+        update
+        user
+        set
+        USER_RANK = 0
+        where
+        USER_ID = #{userId,jdbcType=INTEGER}
+        AND USER_STATUS = 0
+        AND USER_STUSTATUS = 0
+    </update>
+
+    <!--管理员封禁用户-->
+    <update id="bannedUser" parameterType="com.example.studentnotes.model.User">
+        update
+        user
+        set
+        USER_STATUS = 1
+        where
+        USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+
+    <!--管理员设置学生毕业或退学-->
+    <update id="setStudent" parameterType="com.example.studentnotes.model.User">
+        update
+        user
+        set
+        USER_STUSTATUS = 1
+        where
+        USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+
+    <!--删除用户-->
+    <update id="deleteUser" parameterType="com.example.studentnotes.model.User">
+        update
+        user
+        set
+        USER_STATUS = 1
+        where
+        USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+
+    <!--下载减积分-->
+    <update id="download" parameterType="com.example.studentnotes.model.User">
+        update
+        user
+        set USER_INTEGRAL = USER_INTEGRAL-1
+        where
+        USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+    <!--上传加积分-->
+    <update id="upload" parameterType="com.example.studentnotes.model.User">
+        update
+        user
+        set USER_INTEGRAL = USER_INTEGRAL+1
+        where
+        USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+
+    <!--加分-->
+    <update id="updateAddScore" parameterType="com.example.studentnotes.model.User">
+        update
+        user
+        set USER_INTEGRAL = USER_INTEGRAL + #{userIntegral,jdbcType=INTEGER}
+        where
+        USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+
+    <!--扣分-->
+    <update id="updateMinusScore" parameterType="com.example.studentnotes.model.User">
+        update
+        user
+        set USER_INTEGRAL = USER_INTEGRAL - #{userIntegral,jdbcType=INTEGER}
+        where
+        USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+    <!--所有-->
+    <select id="selectAll" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from user
+
+    </select>
+    <!--所有-->
+    <select id="selectId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where USER_ID like concat ('%',#{string,jdbcType=VARCHAR},'%')
+        or USER_STUID like concat ('%',#{string,jdbcType=VARCHAR},'%')
+        or USER_UNAME like concat ('%',#{string,jdbcType=VARCHAR},'%')
+        or USER_NAME like concat ('%',#{string,jdbcType=VARCHAR},'%')
+    </select>
+
+    <!--用户总量-->
+    <select id="selectUserNum" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from user
+    </select>
+
+</mapper>

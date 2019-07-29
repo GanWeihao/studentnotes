@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台登录-X-admin1.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="js/time.js" ></script>
+</head>
+<body>
+    <!-- 顶部开始 -->
+    <div class="container1">
+        <div class="logo"><a href="./index.html">X-ADMIN V1.1</a></div>
+        <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
+        <ul class="layui-nav right" lay-filter="">
+          <li class="layui-nav-item">
+            <a href="javascript:;">admin</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+              <dd><a href="">个人信息</a></dd>
+              <dd><a href="">切换帐号</a></dd>
+              <dd><a href="./login.html">退出</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="/">前台首页</a></li>
+        </ul>
+    </div>
+    <!-- 顶部结束 -->
+    <!-- 中部开始 -->
+    <div class="wrapper">
+               <!-- 左侧菜单开始 -->
+        <div class="left-nav">
+          <div id="side-nav">
+            <ul id="nav">
+                <li class="list" current>
+                    <a href="./index.html">
+                        <i class="iconfont">&#xe761;</i>
+                        欢迎页面
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        用户管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="member-list.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                用户列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="xuebaconfirme.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                学霸认证
+                            </a>
+                        </li>
+                        <li>
+                            <a href="member-kiss.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                积分管理
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                                分类管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="category.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                分类列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        文章管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="ArticleList.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                                                 文章列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        文件管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="FileList.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                文件列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        反馈管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="feedback.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                反馈列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+          </div>
+        </div>
+        <!-- 左侧菜单结束 -->
+        <!-- 右侧主体开始 -->
+        <div id="wrapper" >
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+
+              <div class="layui-form-pane" style="text-align: center;">
+                  <div class="layui-form-item" style="display: inline-block;">
+
+                      <div class="layui-input-inline">
+                          <input v-model="string" type="text" name="username"  placeholder="" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-input-inline" style="width:80px">
+                          <button @click="find" class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                      </div>
+                  </div>
+              </div>
+
+              <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            内容
+                        </th>
+                        <th>
+                            时间
+                        </th>
+                        <th>
+                            状态
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                    <tr v-for="feedback in list">
+                        <td style="min-width: 200px">{{feedback.feedBackId}}</td>
+                        <td style="min-width: 400px;overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">{{feedback.feedBackContent}}</td>
+                        <td style="min-width: 200px">{{feedback.feedBackTime}}</td>
+                        <td style="min-width: 200px">{{feedback.feedBackStatus}}</td>
+
+                        <td>
+                            <button @click="find" :id="feedback.feedBackId" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">查看</button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+
+    <!-- 中部结束 -->
+
+    <!-- 背景切换开始 -->
+    <div class="bg-changer">
+        <div class="swiper-container changer-list">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img class="item" src="./images/a.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/b.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/c.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/d.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/e.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/f.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/g.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/h.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/i.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/j.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/k.jpg" alt=""></div>
+                <div class="swiper-slide"><span class="reset">初始化</span></div>
+            </div>
+        </div>
+        <div class="bg-out"></div>
+        <div id="changer-set"><i class="iconfont">&#xe696;</i></div>   
+    </div>
+    <!-- 背景切换结束 -->
+    <!-- 页面动态效果 -->
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">反馈信息</h4>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">内容:</label>
+                            <textarea v-model="nr" type="text" class="form-control" id="recipient-name">
+                            </textarea>
+                        </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button @click="ok" type="button" class="btn btn-primary">已查阅</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script>
+        var vm=new Vue({
+            el:"#wrapper",
+            data:{
+                list:[],
+                nr:'',
+                id:'',
+                string:''
+            },
+            created:function(){
+                this.init();
+            },
+            methods:{
+                init:function () {
+                    var self=this;
+                    axios.get("https://www.a1c1.com/feedback/select")
+                        .then(function(response){
+                            console.log(response)
+                            if(response.data.status==200){
+                                for(var i=0;i<response.data.data.length;i++){
+                                    response.data.data[i].feedBackTime = getLocalTime(response.data.data[i].feedBackTime)
+                                    if(response.data.data[i].feedBackStatus == 1){
+                                        response.data.data[i].feedBackStatus = "已查阅"
+                                    }else if(response.data.data[i].feedBackStatus == 0){
+                                        response.data.data[i].feedBackStatus = "未查阅"
+                                    }
+                                }
+                                self.list=response.data.data;
+                            }else{
+                                alert(response.data.message);
+                            }
+                        }).catch(function(e){
+                        console.log(e)
+                    })
+                },
+                find:function (e) {
+                    var self=this;
+                    axios.get("https://www.a1c1.com/feedback/selectId?feedBackId="+e.target.id)
+                        .then(function(response){
+                            if(response.data.status == 200){
+                                    self.id=response.data.data.feedBackId
+                                    self.nr=response.data.data.feedBackContent
+                            }
+                        }).catch(function(e){
+                        console.log(e)
+                    })
+                },
+                ok:function () {
+                    var self=this;
+                    axios.get("https://www.a1c1.com/feedback/update?feedBackId="+self.id)
+                        .then(function(response){
+                            if(response.data.status == 200){
+                                alert("查阅成功")
+                                self.init();
+                            }else{
+                                alert(response.data.message)
+                            }
+                        }).catch(function(e){
+                        console.log(e)
+                    })
+                }
+            }
+        })
+
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.studentnotes.mapper.FeedBackMapper" >
+    <resultMap id="BaseResultMap" type="com.example.studentnotes.model.FeedBack" >
+        <constructor >
+            <idArg column="FEEDBACK_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="FEEDBACK_CONTENT" jdbcType="VARCHAR" javaType="java.lang.String" />
+            <arg column="FEEDBACK_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+            <arg column="FEEDBACK_STATUS" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="FEEDBACK_USER_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List"  >
+        FEEDBACK_ID,FEEDBACK_CONTENT,FEEDBACK_TIME,FEEDBACK_STATUS,FEEDBACK_USER_ID
+  </sql>
+
+    <insert id="addFeedBack" parameterType="com.example.studentnotes.model.FeedBack">
+        insert
+        into feedback
+          (FEEDBACK_CONTENT,FEEDBACK_TIME,FEEDBACK_STATUS,FEEDBACK_USER_ID)
+        VALUES
+        (#{feedBackContent,jdbcType=VARCHAR},now(),0,#{feedBackUserId,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteFeedBack"  parameterType="com.example.studentnotes.model.FeedBack">
+        delete
+        from feedback
+        where
+        FEEDBACK_ID = #{feedBackId,jdbcType=INTEGER}
+    </delete>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from feedback
+    </select>
+    <select id="selectId" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.FeedBack">
+        select
+        <include refid="Base_Column_List" />
+        from feedback
+        where FEEDBACK_ID = #{feedBackId,jdbcType=INTEGER}
+    </select>
+    <update id="updateStatus" parameterType="com.example.studentnotes.model.FeedBack">
+        update feedback set FEEDBACK_STATUS = 1 where FEEDBACK_ID = #{feedBackId,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.studentnotes.mapper.ConfirmeMapper" >
+  <resultMap id="BaseResultMap" type="com.example.studentnotes.model.Confirme" >
+    <constructor >
+      <idArg column="CONFIRME_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="CONFIRME_IMG_URL" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="CONFIRME_USER_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="CONFIRME_USER_STUID" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="CONFIRME_STATUS" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="CONFIRME_DISPLAY" jdbcType="LONGVARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    CONFIRME_ID, CONFIRME_IMG_URL, CONFIRME_USER_ID, CONFIRME_USER_STUID, CONFIRME_STATUS,CONFIRME_DISPLAY
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+
+    from confirme
+    where CONFIRME_ID = #{confirmeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from confirme
+    where CONFIRME_ID = #{confirmeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.studentnotes.model.Confirme" >
+    insert into confirme (CONFIRME_ID, CONFIRME_IMG_URL, CONFIRME_USER_ID, 
+      CONFIRME_USER_STUID, CONFIRME_STATUS, CONFIRME_DISPLAY
+      )
+    values (#{confirmeId,jdbcType=INTEGER}, #{confirmeImgUrl,jdbcType=VARCHAR}, #{confirmeUserId,jdbcType=VARCHAR}, 
+      #{confirmeUserStuid,jdbcType=VARCHAR}, #{confirmeStatus,jdbcType=INTEGER}, #{confirmeDisplay,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.studentnotes.model.Confirme" >
+    insert into confirme
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="confirmeId != null" >
+        CONFIRME_ID,
+      </if>
+      <if test="confirmeImgUrl != null" >
+        CONFIRME_IMG_URL,
+      </if>
+      <if test="confirmeUserId != null" >
+        CONFIRME_USER_ID,
+      </if>
+      <if test="confirmeUserStuid != null" >
+        CONFIRME_USER_STUID,
+      </if>
+      <if test="confirmeStatus != null" >
+        CONFIRME_STATUS,
+      </if>
+      <if test="confirmeDisplay != null" >
+        CONFIRME_DISPLAY,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="confirmeId != null" >
+        #{confirmeId,jdbcType=INTEGER},
+      </if>
+      <if test="confirmeImgUrl != null" >
+        #{confirmeImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmeUserId != null" >
+        #{confirmeUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmeUserStuid != null" >
+        #{confirmeUserStuid,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmeStatus != null" >
+        #{confirmeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="confirmeDisplay != null" >
+        #{confirmeDisplay,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.studentnotes.model.Confirme" >
+    update confirme
+    <set >
+      <if test="confirmeImgUrl != null" >
+        CONFIRME_IMG_URL = #{confirmeImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmeUserId != null" >
+        CONFIRME_USER_ID = #{confirmeUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmeUserStuid != null" >
+        CONFIRME_USER_STUID = #{confirmeUserStuid,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmeStatus != null" >
+        CONFIRME_STATUS = #{confirmeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="confirmeDisplay != null" >
+        CONFIRME_DISPLAY = #{confirmeDisplay,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where CONFIRME_ID = #{confirmeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.studentnotes.model.Confirme" >
+    update confirme
+    set CONFIRME_IMG_URL = #{confirmeImgUrl,jdbcType=VARCHAR},
+      CONFIRME_USER_ID = #{confirmeUserId,jdbcType=VARCHAR},
+      CONFIRME_USER_STUID = #{confirmeUserStuid,jdbcType=VARCHAR},
+      CONFIRME_STATUS = #{confirmeStatus,jdbcType=INTEGER},
+      CONFIRME_DISPLAY = #{confirmeDisplay,jdbcType=LONGVARCHAR}
+    where CONFIRME_ID = #{confirmeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.studentnotes.model.Confirme" >
+    update confirme
+    set CONFIRME_IMG_URL = #{confirmeImgUrl,jdbcType=VARCHAR},
+      CONFIRME_USER_ID = #{confirmeUserId,jdbcType=VARCHAR},
+      CONFIRME_USER_STUID = #{confirmeUserStuid,jdbcType=VARCHAR},
+      CONFIRME_STATUS = #{confirmeStatus,jdbcType=INTEGER}
+    where CONFIRME_ID = #{confirmeId,jdbcType=INTEGER}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from confirme
+    where CONFIRME_STATUS  = 0
+  </select>
+</mapper>

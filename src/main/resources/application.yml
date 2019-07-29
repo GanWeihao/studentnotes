@@ -1,0 +1,40 @@
+server:
+#  #端口号
+  port: 9090
+#  #你生成的证书名字
+#  ssl.key-store: classpath:ssl.jks
+##  密钥库密码
+#  ssl.key-store-password: ggb52zh631z6a
+#  ssl.keyStoreType: JKS
+##  ssl.keyAlias: alias
+  tomcat:
+    uri-encoding: UTF-8
+    max-connections: 20000
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://154.8.199.136:3306/studentnotes?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&serverTimezone=Hongkong
+    username: root
+    password: RN8222JF852HUhun81HUFX.
+mvc:
+    static-path-pattern: /static/**
+resources:
+    static-locations: classpath:/static/
+mybatis:
+      mapper-locations: classpath*:mapper/*.xml
+      type-aliases-package: com.example.model
+logging:
+      level:
+        edu:
+          taru:
+            api: INFO
+            mapper: DEBUG
+pattern:
+      console: '%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n  '
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params:
+

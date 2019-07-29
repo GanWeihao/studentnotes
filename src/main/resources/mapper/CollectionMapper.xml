@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.studentnotes.mapper.CollectionMapper" >
+  <resultMap id="BaseResultMap" type="com.example.studentnotes.model.Collection" >
+    <constructor >
+      <idArg column="COLLECTION_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="COLLECTION_TIME" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="COLLECTION_ARTICLE_ID" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="COLLECTION_USER_ID" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="COLLECTION_STATUS" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    COLLECTION_ID, COLLECTION_TIME, COLLECTION_ARTICLE_ID, COLLECTION_USER_ID,COLLECTION_STATUS
+  </sql>
+
+  <!--根据文章ID显示收藏-->
+  <select id="selectByArticle" resultMap="BaseResultMap" parameterType="com.example.studentnotes.model.Collection">
+    select
+    <include refid="Base_Column_List" />
+    from collection
+    where COLLECTION_ARTICLE_ID = #{collectAticleId,jdbcType=INTEGER}
+    and COLLECTION_USER_ID = #{collectionUserId,jdbcType=VARCHAR}
+    and COLLECTION_STATUS = #{collectionStatus,jdbcType=INTEGER}
+  </select>
+  <!--根据用户ID显示收藏记录-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from collection
+    where COLLECTION_USER_ID = #{collectionUserId,jdbcType=VARCHAR}
+  </select>
+  <!--根据收藏ID删除收藏-->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from collection
+    where COLLECTION_ID = #{collectionId,jdbcType=INTEGER}
+  </delete>
+  <!--添加收藏-->
+  <insert id="insert" parameterType="com.example.studentnotes.model.Collection" >
+    insert into collection (COLLECTION_TIME, COLLECTION_FILE_ID,
+      COLLECTION_USER_ID,COLLECTION_STATUS)
+    values (now(), #{collectionArticleId,jdbcType=INTEGER},
+      #{collectionUserId,jdbcType=VARCHAR},#{collectionStatus,jdbcType=INTEGER})
+  </insert>
+</mapper>

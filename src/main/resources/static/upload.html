@@ -1,0 +1,201 @@
+<!doctype html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js"></script>
+    <script src="js/zx.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+<div id="app" >
+    <!--<input id="file1" type="file" name="file" onclick="up">-->
+    <!--<input id="upload" type="button" value="上传" onclick="upload">-->
+
+    <div class="title" ><label>标题</label><input v-model="title" style="border-style:none" placeholder="请输入标题"></div>
+    <!--<hr style="height:1px;border:none;border-top:1px solid #555555;" />-->
+    <div class="title1" ><label>简介</label>    <input v-model="nr" style="border-style:none;height: 90px;width: 100%" placeholder="请输入简介"></div>
+    <!--<hr style="height:1px;border:none;border-top:1px solid #555555;" />-->
+    <div class="title0" ><label>类别</label>    <select @change="a" id="category" size=1 >
+        <option v-for="add in list1">{{add.categoryName}}</option>
+    </select>
+    </div>
+    <!--<hr style="height:1px;border:none;border-top:1px solid #555555;" />-->
+    <div class="title" ><a href="javascript:;" class="file">选择文件<input class="select" type="file" name="file" v-on:change="fileChange"/></a></div>
+    <div class="titleup" ><button class="buttonup" v-on:click="upLoad" >上传</button></div>
+</div>
+    <style>
+        #app{
+
+            min-height: 60rem;
+            padding-top: 3rem;
+            position: relative;
+            background-attachment: fixed;
+            /*background-image: url('http://154.8.199.136:8089/wx/bg-index.jpg');*/
+            width: 100%;
+            background-size: 100% 100%;
+            -moz-background-size: 100% 100%;
+            top: 0;
+            background-image: url('http://154.8.199.136:8089/wx/bg-index.jpg');
+        }
+        input{
+            /*background-color: #f78989;*/
+        }
+        .select{
+            line-height: 5rem;
+            width: 100%;
+            height: 5rem;
+            /*background-color: #000;*/
+        }
+        .title{
+            line-height: 5rem;
+            background-color: rgb(255, 255, 255);
+            width: 92%;
+            margin-left: 4%;
+            height: 5rem;
+            margin-top: 1rem;
+            box-shadow: #6f7180 0px 0px 5px;
+            border-radius: 1rem;
+        }
+        .title1{
+             line-height: 5rem;
+             background-color: rgb(255, 255, 255);
+             width: 92%;
+             margin-left: 4%;
+             height: 15rem;
+             margin-top: 1rem;
+             box-shadow: #6f7180 0px 0px 5px;
+             border-radius: 1rem;
+         }
+        .title0{
+            line-height: 3rem;
+            background-color: rgb(255, 255, 255);
+            width: 92%;
+            margin-left: 4%;
+            height: 3rem;
+            margin-top: 1rem;
+            box-shadow: #6f7180 0px 0px 5px;
+            border-radius: 1rem;
+        }
+        .titleup{
+            line-height: 5rem;
+            background-color: rgb(255, 255, 255);
+            width: 92%;
+            margin-left: 4%;
+            height: 50px;
+            margin-top: 1rem;
+            box-shadow: #6f7180 0px 0px 5px;
+            border-radius: 1rem;
+        }
+        .buttonup{
+            background-color: #ffffff;
+            border: none;
+            border-radius: 1rem;
+            width: 100%;
+            height: 100%;
+        }
+        .file {
+            position: relative;
+            display: inline-block;
+            background: #D0EEFF;
+            border: 1px solid #99D3F5;
+            border-radius: 4px;
+            padding: 4px 12px;
+            overflow: hidden;
+            color: #1E88C7;
+            text-decoration: none;
+            text-indent: 0;
+            line-height: 20px;
+        }
+        .file input {
+            position: absolute;
+            font-size: 100px;
+            right: 0;
+            top: 0;
+            opacity: 0;
+        }
+        .file:hover {
+            background: #AADFFD;
+            border-color: #78C3F3;
+            color: #004974;
+            text-decoration: none;
+        }
+    </style>
+</body>
+<script type="text/javascript">
+    var vue =new Vue({
+        el:'#app',
+        data:{
+            change:'',
+            list1:[],
+            id:'',
+            uid:'',
+            title:'',
+            nr:''
+        },
+        created:function(){
+            this.init();
+        },
+        methods:{
+            init:function(){
+                var self=this;
+                self.uid = window_request_paramter("id");
+                var self=this;
+                axios.get("https://www.a1c1.com/category/select").then(function(response){
+                    if(response.data.status == 200){
+                        self.list1=response.data.data
+                    }else{
+                        alert("出问题")
+                    }
+                }).catch(function(error){
+                    console.log(error);
+                })
+            },
+            fileChange:function(e){
+                var files=e.target.files || e.DataTransfer.files;
+                if(!files.length){
+                    return;
+                }
+                this.change=files[0];
+            },
+            a:function(){
+                axios.get("https://www.a1c1.com/category/selectId?categoryName="+$("#category option:selected").text()).then(function(response){
+                    if(response.data.status == 200){
+                        console.log(response)
+                        self.id=response.data.data.categoryId
+                    }else{
+                        alert("出问题")
+                    }
+                    console.log(response)
+                }).catch(function(error){
+                    console.log(error);
+                })
+            },
+            upLoad:function(){
+
+                var self=this;
+                var params=new FormData();
+                params.append('file',self.change);
+                params.append('ufileUserId',1);
+                params.append('ufileTitle',self.title);
+                params.append('ufileIntroduce',self.nr);
+                axios.post("https://www.a1c1.com/user/release",params).then(function(response){
+                    console.log(response)
+                    if(response.data.status == 200){
+                        alert("上传成功");
+                    }else{
+                        alert(response.data.message);
+                    }
+                }).catch(function(error){
+                    console.log(error);
+                })
+            }
+        }
+    })
+</script>
+
+</html>
