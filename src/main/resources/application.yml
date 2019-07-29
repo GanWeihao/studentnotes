@@ -1,6 +1,6 @@
 server:
 #  #端口号
-  port: 9090
+  port: 8080
 #  #你生成的证书名字
 #  ssl.key-store: classpath:ssl.jks
 ##  密钥库密码
